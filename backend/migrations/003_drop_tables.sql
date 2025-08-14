@@ -1,0 +1,8 @@
+-- 003_drop_tables.sql
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS materials;
+DROP TABLE IF EXISTS gels;
+DROP TABLE IF EXISTS plates;
+DROP TABLE IF EXISTS analysis;
+DROP TABLE IF EXISTS methods;
+DROP TABLE IF EXISTS proteomes;
