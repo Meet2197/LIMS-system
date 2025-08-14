@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    # Build the image using the Dockerfile in the 'backend' directory
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    # Command to run the Flask application
+    command: python app.py
+    # Mount the local backend directory for live code changes
+    volumes:
+      - ./backend:/app/backend
+    # Expose the backend port
+    ports:
+      - "5000:5000" # Use a consistent port, e.g., 5000 for backend
+
+  frontend:
+    # Build the image using the Dockerfile in the 'frontend' directory
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    # Command to run the Node.js application
+    command: npm start
+    # Mount the local frontend directory for live code changes
+    volumes:
+      - ./frontend:/app/frontend
+    # Expose the frontend port
+    ports:
+      - "3000:3000"
+    # The frontend needs the backend to be running
+    depends_on:
+      - backend
