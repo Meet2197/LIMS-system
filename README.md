@@ -1,125 +1,134 @@
-# LIMS System
-This repository contains a professional Laboratory Information Management System (LIMS) built using the Django framework. The application provides a robust and scalable solution for managing laboratory data, samples, and workflows.
+# Laboratory Information Management System (LIMS)
 
-# 📝 Features
-Sample Management: Track samples from intake to disposal, with detailed information on type, origin, and status.
+A web-based Laboratory Information Management System built with a Node.js backend and a simple, responsive HTML/JavaScript frontend. This application provides a centralized platform for managing various laboratory data entities, including users, materials, plates, and analysis data.
 
-User and Role Management: Define different user roles with specific permissions to ensure data security and integrity.
+## Features
 
-Workflow Automation: Manage and track laboratory processes and experimental workflows.
+User Authentication: Secure login system with username and password.
 
-Data Reporting: Generate comprehensive reports on laboratory activities and results.
+## Dashboard: A central dashboard with navigation to different data management sections.
 
-Scalable Architecture: Built on Django, a reliable and secure framework, ready for production use.
+Data Management: CRUD (Create, Read, Update, Delete) functionality for multiple data entities (users, materials, gels, plates, analysis, methods, proteomes).
 
-# ⚙️ Prerequisites
-Before you begin, ensure you have the following software installed on your machine:
+SQLite Database: A lightweight, file-based database for persistence.
 
-Git: For cloning the repository.
+RESTful API: A well-defined API for frontend-backend communication.
 
-Docker & Docker CLI: To build and run the application and its database in separate containers.
+Docker Support: Containerized setup for easy deployment and development environment consistency.
 
-# 🚀 Getting Started
-Follow these steps to get the LIMS application running on your local machine using Docker.
+## Prerequisites : 
 
-## 1. Clone the Repository
-Clone the project from GitHub and navigate into the project directory.
+To run this project, you need to have the following software installed on your machine:
 
-```Bash
+Node.js (v18.x or later)
 
-git clone https://github.com/Meet2197/LIMS-system.git
+npm (usually comes with Node.js)
+
+Docker (optional, but highly recommended)
+
+## Installation and Setup : 
+
+There are two recommended ways to set up and run this project:
+
+Method 1: Using Docker (Recommended)
+
+Docker simplifies the setup process by handling all dependencies and environment configurations.
+
+Clone the repository:
+
+```bash
+git clone [(https://github.com/Meet2197/LIMS-system)]
 cd LIMS-system
 ```
 
-## 2. Configure the Database
-The application uses PostgreSQL as its database. You will run it in a separate Docker container.
+Build and run the Docker containers:
 
-First, start a new PostgreSQL container. We'll use a container named lims-db and set the database name, user, and password using environment variables.
-
-```Bash
-
-docker run --name lims-db \
--e POSTGRES_DB=lims_db \
--e POSTGRES_USER=lims_user \
--e POSTGRES_PASSWORD=lims_password \
--p 5432:5432 \
--d postgres:13
+```bash
+docker-compose up --build
 ```
 
-This command starts a PostgreSQL 13 container in detached mode (-d), mapping its port 5432 to the same port on your host machine.
+This command will build the Docker image, set up the container, and start both the frontend and backend servers.
 
-## 3. Update Django Settings
-The Django backend needs to be configured to connect to the PostgreSQL database container. Navigate to LIMS/settings.py and modify the DATABASES setting to match the credentials you used above.
+Once the containers are running, the application will be available at ```bash http://localhost:3000```.
 
-```Bash
- LIMS/settings.py
+Method 2: Manual Setup
+
+If you prefer to run the application directly on your machine, follow these steps.
+
+Clone the repository:
+
+```bash
+git clone [https://github.com/Meet2197/LIMS-system]
+cd LIMS-system
 ```
-... (other settings) ...
+Install frontend dependencies:
+The frontend app.js uses http-proxy-middleware.
 
-```Bash
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lims_db',
-        'USER': 'lims_user',
-        'PASSWORD': 'lims_password',
-        'HOST': 'lims-db', # This is the Docker container name
-        'PORT': '5432',
-    }
-}
-```
-... (rest of the file) ...
-Note on Frontend: This is a Django application, which means the frontend (HTML templates, CSS, and JavaScript) is served by the backend. There is no direct database connection from the frontend files themselves, as this is a fundamental design principle for web security. All data requests are handled through the Django backend.
-
-## 4. Build and Run the Backend
-Now, build the Docker image for the Django application and run it. The Dockerfile in this repository handles all the necessary setup, including installing dependencies from requirements.txt.
-
-Build the Docker image with a tag, for example, lims-backend:
-
-```Bash
-docker build -t lims-backend .
-```
-After the image is built, run the container and link it to the database container using the --link flag.
-
-
-```Bash
-docker run --name lims-backend \
---link lims-db:db \
--p 8000:8000 \
--d lims-backend
+```bash
+npm install
 ```
 
-The --link lims-db:db command creates an alias db inside the lims-backend container that points to the lims-db container. This is crucial for the Django application to find and connect to the database.
+This will install the necessary packages listed in package.json.
 
-## 5. Run Migrations and Create a Superuser
-With both the database and backend running, you can now set up the database schema and create an administrative user. You will use docker exec to run commands inside the lims-backend container.
+Start the backend server:
+Open a new terminal window and run the backend server.
 
-Run database migrations:
-
-```Bash
-
-docker exec lims-backend python manage.py makemigrations
-docker exec lims-backend python manage.py migrate
+```bash
+node server.js
 ```
 
-Create an administrative superuser:
+The backend server will run on port 5000.
 
-``` Bash
-docker exec -it lims-backend python manage.py createsuperuser
+Start the frontend server:
+Open another terminal window and run the frontend server.
+
+```bash
+node app.js
 ```
-Follow the prompts to enter a username, email, and password.
 
+The frontend server will run on port 3000 and proxy requests to the backend on 5000.
 
-The LIMS application should now be fully operational. You can access it at http://localhost:8000 in your web browser.
+Access the application by navigating to ```bash http://localhost:3000 ``` in your web browser.
 
-# 📂 Project Structure
+Usage
+Access the application through your web browser at ```bash http://localhost:3000 ```
 
-/: The root directory containing the Dockerfile and this README.md file.
+Default Login Credentials:
 
-LIMS/: The main Django project directory. Contains settings.py, urls.py, and other core project configuration files.
+```bash
+Username: admin
 
-app/: The Django application code. This is where you'll find models, views, templates, and other application-specific logic.
+Password: admin123
+```
 
-requirements.txt: A list of all Python dependencies required by the project.
+These credentials are pre-seeded into the database to allow you to log in and begin managing your lab data immediately.
 
-.env.example: A template for environment variables used by the application.
+# File Structure
+
+app.js: The frontend server, which serves static files and proxies API requests.
+
+server.js: The backend server, which handles API routes and database interactions.
+
+login.html, dashboard.html: Core HTML files for the user interface.
+
+package.json: Manages the Node.js project's dependencies and scripts.
+
+database.db: The SQLite database file.
+
+Dockerfile: Defines the Docker image for the application.
+
+# Dependencies
+
+express: Web framework for Node.js.
+
+sqlite3: SQLite database driver.
+
+bcrypt: Library for hashing passwords.
+
+jsonwebtoken: Library for creating and verifying JSON Web Tokens (JWT).
+
+http-proxy-middleware: Middleware for proxying HTTP requests.
+
+# License : 
+
+This project is licensed under the MIT License.
