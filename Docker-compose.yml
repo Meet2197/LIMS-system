@@ -1,24 +1,17 @@
-version: "3.8"
+
+version: '3.8'
 
 services:
-  backend:
-    build:
-      context: ./backend
-    container_name: lims-backend
-    ports:
-      - "5000:5000"
+  web:
+    # Build the Docker image from the Dockerfile in the current directory.
+    build: .
+    # This command starts the Django development server.
+    command: python manage.py runserver 0.0.0.0:8000
+    # Mount the local project directory into the container.
+    # This allows you to see code changes in real-time without rebuilding the image.
     volumes:
-      - ./backend:/app
-    environment:
-      - PYTHONUNBUFFERED=1
-
-  frontend:
-    build:
-      context: ./frontend
-    container_name: lims-frontend
+      - .:/app
+    # Map the container's port 8000 to the host's port 8000.
+    # This makes the web server accessible from your local machine.
     ports:
-      - "80:80"
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
+      - "8000:8000"

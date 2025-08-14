@@ -3,8 +3,8 @@
 
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE,
-  password TEXT,
+username TEXT NOT NULL,
+  password TEXT NOT NULL,
   fullname TEXT,
   affiliation TEXT,
   note TEXT
@@ -53,4 +53,9 @@ CREATE TABLE IF NOT EXISTS proteomes (
   mapid TEXT,
   species TEXT,
   note TEXT
+
+  CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    
+);
 );

@@ -1,27 +1,20 @@
-# Use official Python image
+# Use Python 3.11 slim image
 FROM python:3.11-slim
-
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Copy backend files
+COPY . /app
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the backend code
-COPY . .
+# Install SQLite3 (should already be in Python, but ensure CLI available)
+RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
 
-# Expose the backend port
+# Expose backend port
 EXPOSE 5000
 
-# Run the backend app
-CMD ["python", "db_manage.py"]
+# Run database migrations and seed
+CMD ["bash", "-c", "python db_manage.py && python app.py"]
