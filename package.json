@@ -1,0 +1,16 @@
+{
+    "name": "lims-backend",
+    "version": "1.0.0",
+    "description": "LIMS Backend with Node.js and SQLite3",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "express": "^4.19.2",
+        "http-proxy-middleware": "^2.0.9",
+        "jsonwebtoken": "^9.0.2",
+        "sqlite3": "^5.1.7"
+    }
+}

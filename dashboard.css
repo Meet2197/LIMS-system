@@ -1,4 +1,4 @@
 body{background:#f8f9fa;font-family:Inter,Arial,Helvetica,sans-serif}
 .list-group-item.active{background:#4e73df;border-color:#4e73df}
-.card-form{box-shadow:0 6px 18px rgba(0,0,0,0.08);border-radius:10px;padding:16px;background:#fff}
+.card-form{box-shadow:0 6s 18px rgba(0,0,0,0.08);border-radius:10px;padding:16px;background:#fff}
 .table-actions button{margin-right:6px}
